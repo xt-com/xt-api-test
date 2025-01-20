@@ -26,7 +26,7 @@ jobs:
 
       - name: Deploy to GitHub Pages
         if: success()
-        uses: peaceiris/actions-test-pages@v3
+        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs  # 指向包含子模块的页面目录，确保 Pages 目录路径正确
