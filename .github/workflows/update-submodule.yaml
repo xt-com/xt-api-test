@@ -1,0 +1,32 @@
+name: Update and Sync Submodules
+
+on:
+  push:
+    branches:
+      - test  # 在 main 分支有变动时触发
+  workflow_dispatch:  # 手动触发此 workflow
+
+jobs:
+  update-submodules:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository with submodules
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive  # 确保拉取子模块
+          fetch-depth: 0  # 拉取整个历史，以防需要更新子模块内容
+
+      - name: Update submodules to latest commit
+        run: |
+          git submodule update --remote --merge
+          git add .
+          git commit -m "Auto-update submodules to latest commit" || echo "No changes to commit"
+          git push origin main || echo "No changes to push"
+
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: peaceiris/actions-test-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs  # 指向包含子模块的页面目录，确保 Pages 目录路径正确
