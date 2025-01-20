@@ -28,5 +28,5 @@ jobs:
         if: success()
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GH_TOKEN }}
           publish_dir: ./docs  # 指向包含子模块的页面目录，确保 Pages 目录路径正确
